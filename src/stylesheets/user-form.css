@@ -1,0 +1,115 @@
+/* about-div start */
+.about-div {
+  background-color: #faf5f4;
+}
+
+.input-name {
+  padding: 5%;
+  height: 7vh;
+  width: 20vw;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  color: #3c6685;
+}
+.age-btn {
+  margin: 0px 10px 0px 10px;
+  width: 7vw;
+  height: 6vh;
+  color: #3c6685;
+  border: none;
+  background-color: white;
+}
+.age-btn:hover {
+  background-color: #3c6685;
+  color: white;
+}
+/* about-div end */
+
+/* skin-feel-div start */
+.skin-feel-div {
+  background-color: #f4e2dc;
+  color:#3c6685;
+}
+.radiobtn{zoom: 2;}
+
+/* skin-feel-div end */
+
+/* skin-concern-div start */
+.skin-concern-div {
+  background-color: #faf5f4;
+  color: #3c6685;
+}
+.concern-btn,
+.concern-txt {
+  margin: 10px 10px 0px 10px;
+  width: 15vw;
+  height: 7vh;
+  border-radius: 10px;
+  color: #3c6685;
+  border: none;
+  background-color: white;
+}
+.concern-btn:hover {
+  background-color: #3c6685;
+  color: white;
+}
+
+/* skin-concern-div end */
+
+/* skin-allergic-div start */
+.skin-allergic-div {
+  background-color: #e6eced;
+  color: #3c6685;
+}
+
+/* skin-allergic-div end */
+
+/* skin-problem-div start */
+
+.problems-div {
+  background-color: #faf5f4;
+  color: #3c6685;
+}
+.ckb{zoom: 2;}
+/* skin-problem-div end */
+
+/* skin-analysis-div start */
+
+.skin-analysis-dev {
+  background-color: #8ea7b9;
+}
+
+.heading2 {
+  font-family: 'Libre Baskerville';
+  font-size: 1.5em;
+  color: white;
+}
+.heading2_1 {
+  color: white;
+}
+.routine-btn{
+  background-color:#fcdac9 ;
+  color: #3c6685;
+  box-shadow:2px 4px 5px #888888;
+  padding:5px 20px 5px 20px;
+  border-radius: 20px;
+}
+.routine-btn:hover{
+  color:#3c6685;
+}
+
+/* skin-analysis-div end */
+
+/* common properties start */
+.div-size {
+  height: 60vh;
+  width: 100vw;
+}
+.heading {
+  font-family: 'Libre Baskerville';
+  font-size: 1.8em;
+  color: #3c6685;
+}
+
+/* common properties end */
