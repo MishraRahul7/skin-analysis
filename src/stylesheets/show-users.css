@@ -1,0 +1,9 @@
+.main-div {
+  height: auto;
+  width: 100%;
+  background-image: linear-gradient(#faf5f4, #fcdac9);
+  color: #3c6685;
+}
+.fontsize{
+    font-size: small;
+}

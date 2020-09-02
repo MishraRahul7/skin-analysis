@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
-
+import { Router } from 'react-router-dom';
 import App from './components/App';
-import history from './history';
-import Reducers from './reducers';
+import Reducers from './reducers';import history from "./history";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
@@ -16,7 +14,7 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <Router history={history}>
+  <Router history={history} >
     <Provider store={store}>
       <App />
     </Provider>

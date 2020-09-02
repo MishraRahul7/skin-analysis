@@ -1,6 +1,5 @@
 import { ADD_USER, SHOW_USER } from './types';
 import api from '../api/api';
-
 export const addUser = values => async dispatch => {
   let response;
   try {
@@ -19,5 +18,4 @@ export const showAllUsers = () => async dispatch => {
     type: SHOW_USER,
     payload: response.data
   });
-  history.push('/');
 };

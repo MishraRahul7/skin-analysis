@@ -32,7 +32,10 @@
   color:#3c6685;
 }
 .radiobtn{zoom: 2;}
-
+.fontsize2{
+  font-weight: 500;
+}
+.subtext{font-size: small;}
 /* skin-feel-div end */
 
 /* skin-concern-div start */
@@ -40,6 +43,7 @@
   background-color: #faf5f4;
   color: #3c6685;
 }
+.skin-options{width: 50%;text-align:center;}
 .concern-btn,
 .concern-txt {
   margin: 10px 10px 0px 10px;
@@ -62,6 +66,7 @@
   background-color: #e6eced;
   color: #3c6685;
 }
+.skin-allergy{width: 30%;text-align: center;}
 
 /* skin-allergic-div end */
 

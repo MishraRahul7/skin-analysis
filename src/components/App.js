@@ -1,12 +1,15 @@
-import React from 'react'
-import UserForm from "./UserForm";
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
+import UserForm from './UserForm';
+import ShowUsers from './ShowUsers';
 const App = () => {
-    return (
-        <React.Fragment>
-            <UserForm/>
-        </React.Fragment>
-    )
-}
+  return (
+    <Switch>
+      <Route exact path='/' render={() => <UserForm />} />
+      <Route exact path='/view' render={() => <ShowUsers />} />
+    </Switch>
+  );
+};
 
-export default App
+export default App;
