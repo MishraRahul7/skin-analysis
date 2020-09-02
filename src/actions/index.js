@@ -1,5 +1,6 @@
 import { ADD_USER, SHOW_USER } from './types';
 import api from '../api/api';
+import history from "../history";
 export const addUser = values => async dispatch => {
   let response;
   try {
@@ -8,6 +9,8 @@ export const addUser = values => async dispatch => {
       type: ADD_USER,
       payload: response.data
     });
+    alert("User Added Successfully!");
+    history.push("/view");
   } catch (error) {
     console.log(error);
   }

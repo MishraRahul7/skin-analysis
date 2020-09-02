@@ -20,6 +20,8 @@
   border: none;
   background-color: white;
 }
+/* .age-btn:active{ background-color: #3c6685 !important;} */
+
 .age-btn:hover {
   background-color: #3c6685;
   color: white;

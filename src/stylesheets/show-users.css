@@ -1,5 +1,6 @@
 .main-div {
-  height: auto;
+  min-height: 100vh;
+  max-height: auto;
   width: 100%;
   background-image: linear-gradient(#faf5f4, #fcdac9);
   color: #3c6685;

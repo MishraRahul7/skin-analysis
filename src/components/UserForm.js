@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ButtonGroup, ToggleButton, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
+
 import { addUser } from '../actions';
 import { Icon } from '@iconify/react';
 import infoCircleFill from '@iconify/icons-bi/info-circle-fill';
@@ -12,31 +12,20 @@ import {
   problem,
   skinConcern,
   skinFeels,
-  allergicIng
+  allergicIng,
+  UserSchema
 } from '../containers/FormData';
 
 import '../stylesheets/user-form.css';
 
-const UserSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too short!')
-    .max(30, 'Too Long'),
-  age: Yup.string().required('Please Select Age'),
-  cheeks: Yup.string().required('Required'),
-  t_zone: Yup.string().required('Required'),
-  skin_concerns: Yup.string().required('Required'),
-  allergic_ingredients: Yup.string().required('Required'),
-  problems: Yup.string().required('Required'),
-  email: Yup.string()
-    .email('Invalid email')
-    .required('Required')
-});
 const UserForm = () => {
   const dispatch = useDispatch();
-  const [userAge, setUserAge] = useState('');
-  const [cheeks, setCheeks] = useState('');
-  const [tzone, setTzone] = useState('');
-  const [allergy, setAllergy] = useState('');
+
+  const handleSkip = event => {};
+  const userAge = '';
+  const cheeks ='';
+  const tzone = '';
+  const allergy = '';
 
   return (
     <>
@@ -48,19 +37,27 @@ const UserForm = () => {
             cheeks: '',
             t_zone: '',
             skin_concerns: [],
-            allergic_ingredients: '',
+            allergic_ingredients: 'skipped',
             problems: [],
             email: ''
           }}
           validationSchema={UserSchema}
-          onSubmit={async (values) => {
-            await dispatch(addUser(values));
-            console.log(values);
+          onSubmit={async (values,setSubmitting) => {
+            setSubmitting(true);
+              await dispatch(addUser(values));
+              setSubmitting(false);
           }}
         >
-          {({ values,handleSubmit, handleChange }) => (
+          {({
+            values,
+            handleSubmit,
+            handleChange,
+            errors,
+            touched,
+            isSubmitting,
+            handleBlur
+          }) => (
             <Form onSubmit={handleSubmit}>
-              {console.log(values)}
               <div className='row'>
                 <div className='col about-div div-size d-flex flex-column align-items-center justify-content-center'>
                   <div className='py-2 '>
@@ -71,21 +68,33 @@ const UserForm = () => {
                       required
                       id='name'
                       type='text'
-                      className=' input-name '
+                      onBlur={handleBlur}
+                      className={
+                        (touched.name && errors.name ? 'error' : null,
+                        ' input-name ')
+                      }
                       placeholder='Name'
                       onChange={handleChange}
                     />
                   </div>
+                  {touched.name && errors.name ? (
+                    <div className='error-message text-danger'>
+                      {errors.name}
+                    </div>
+                  ) : null}
                   <div className='py-3'>
                     <span className='heading '>What is your Age?</span>
                   </div>
                   <div className='py-2'>
                     <ButtonGroup className=' btn-status' toggle>
-                      {ages.map((val, idx) => (
+                      {ages.map((val, key) => (
                         <ToggleButton
-                          key={idx}
+                          key={key}
                           type='radio'
-                          className='btn age-btn'
+                          className={
+                            (touched.age && errors.age ? 'error' : null,
+                            'btn age-btn')
+                          }
                           name='age'
                           style={{
                             borderRadius: '10px'
@@ -97,6 +106,11 @@ const UserForm = () => {
                           {val}
                         </ToggleButton>
                       ))}
+                      {touched.name && errors.name ? (
+                        <div className='error-message text-danger'>
+                          {errors.age}
+                        </div>
+                      ) : null}
                     </ButtonGroup>
                   </div>
                 </div>
@@ -123,7 +137,10 @@ const UserForm = () => {
                         return (
                           <div className='col-sm-3' key={key}>
                             <input
-                              className='mr-3 mt-3 radiobtn'
+                              className={
+                                (touched.age && errors.age ? 'error' : null,
+                                'mr-3 mt-3 radiobtn')
+                              }
                               type='radio'
                               name='cheeks'
                               value={val.value}
@@ -226,7 +243,7 @@ const UserForm = () => {
                         </div>
                       ))}
                       <div className='col-sm-12 py-3 ml-4'>
-                        <span>Skip</span>
+                        <span onClick={handleSkip}>Skip</span>
                       </div>
                     </div>
                   </div>
@@ -275,7 +292,7 @@ const UserForm = () => {
                     />
                   </div>
                   <div className='pt-2 pb-4'>
-                    <button type='submit' className='btn routine-btn'>
+                    <button type='submit' className='btn routine-btn' disabled={isSubmitting}>
                       SEE YOUR ROUTINE
                     </button>
                   </div>
@@ -288,5 +305,4 @@ const UserForm = () => {
     </>
   );
 };
-
 export default UserForm;

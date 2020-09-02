@@ -7,10 +7,12 @@ const ShowUsers = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.userData.users);
 
-  console.log(data);
   useEffect(() => {
     dispatch(showAllUsers());
   }, [dispatch]);
+  if(!data){
+    return null;
+  }
   return (
     <div className='container-fluid  main-div px-5'>
       <div className='py-5 d-flex flex-column align-items-center '>
