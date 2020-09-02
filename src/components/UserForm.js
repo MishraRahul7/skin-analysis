@@ -7,6 +7,13 @@ import { addUser } from '../actions';
 import { Icon } from '@iconify/react';
 import infoCircleFill from '@iconify/icons-bi/info-circle-fill';
 import questionCircleFill from '@iconify/icons-bi/question-circle-fill';
+import {
+  ages,
+  problem,
+  skinConcern,
+  skinFeels,
+  allergicIng
+} from '../containers/FormData';
 
 import '../stylesheets/user-form.css';
 
@@ -27,35 +34,9 @@ const UserSchema = Yup.object().shape({
 const UserForm = () => {
   const dispatch = useDispatch();
   const [userAge, setUserAge] = useState('');
-  const ages = ['< 20', '21-30', '31-40', '41-50', '50 +'];
-
   const [cheeks, setCheeks] = useState('');
   const [tzone, setTzone] = useState('');
-  const skinFeels = [
-    { name: 'Dry', value: 'Dry' },
-    { name: 'Normal', value: 'Normal' },
-    { name: 'Oily', value: 'Oily' }
-  ];
-
-  const skinConcern = [
-    'Acne',
-    'Redness',
-    'Pigmentation',
-    'Wrinkles/ Age Spots',
-    'Blackheads/ Whiteheads'
-  ];
-
-  const problem = [
-    'Lack of sleep',
-    'Lack of water intake',
-    'Stressed',
-    'Pregnant',
-    'High AC exposure',
-    'Senstitive skin'
-  ];
-
   const [allergy, setAllergy] = useState('');
-  const allergicIng = ['Vitamin C', 'Salicylic Acid', 'Retinnol', 'Not Sure'];
 
   return (
     <>
@@ -72,14 +53,13 @@ const UserForm = () => {
             email: ''
           }}
           validationSchema={UserSchema}
-          onSubmit={async (values,e) => {
-            e.preventDefault();
+          onSubmit={async (values) => {
             await dispatch(addUser(values));
-            console.log(values)
+            console.log(values);
           }}
         >
-          {({ values, handleChange }) => (
-            <Form>
+          {({ values,handleSubmit, handleChange }) => (
+            <Form onSubmit={handleSubmit}>
               {console.log(values)}
               <div className='row'>
                 <div className='col about-div div-size d-flex flex-column align-items-center justify-content-center'>
