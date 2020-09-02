@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ButtonGroup, ToggleButton, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-
+import { PropagateLoader } from 'react-spinners';
 import { addUser } from '../actions';
 import { Icon } from '@iconify/react';
 import infoCircleFill from '@iconify/icons-bi/info-circle-fill';
@@ -15,15 +15,14 @@ import {
   allergicIng,
   UserSchema
 } from '../containers/FormData';
-
 import '../stylesheets/user-form.css';
 
 const UserForm = () => {
   const dispatch = useDispatch();
-
+  const [loading, setLoading] = useState(false);
   const handleSkip = event => {};
   const userAge = '';
-  const cheeks ='';
+  const cheeks = '';
   const tzone = '';
   const allergy = '';
 
@@ -42,19 +41,17 @@ const UserForm = () => {
             email: ''
           }}
           validationSchema={UserSchema}
-          onSubmit={async (values,setSubmitting) => {
-            setSubmitting(true);
-              await dispatch(addUser(values));
-              setSubmitting(false);
+          onSubmit={async values => {
+            setLoading(true);
+            await dispatch(addUser(values));
+            setLoading(false);
           }}
         >
           {({
-            values,
             handleSubmit,
             handleChange,
             errors,
             touched,
-            isSubmitting,
             handleBlur
           }) => (
             <Form onSubmit={handleSubmit}>
@@ -292,8 +289,12 @@ const UserForm = () => {
                     />
                   </div>
                   <div className='pt-2 pb-4'>
-                    <button type='submit' className='btn routine-btn' disabled={isSubmitting}>
-                      SEE YOUR ROUTINE
+                    <button
+                      type='submit'
+                      className='btn routine-btn'
+                      disabled={loading}
+                    >
+                      {loading ? <PropagateLoader size="10" /> : <span>SEE YOUR ROUTINE</span>}
                     </button>
                   </div>
                 </div>
