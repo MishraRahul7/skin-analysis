@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { ButtonGroup, ToggleButton, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Formik } from 'formik';
-import { PropagateLoader } from 'react-spinners';
+import { Formik, FieldArray } from 'formik';
 import { addUser } from '../actions';
 import { Icon } from '@iconify/react';
 import infoCircleFill from '@iconify/icons-bi/info-circle-fill';
@@ -13,19 +12,14 @@ import {
   skinConcern,
   skinFeels,
   allergicIng,
-  UserSchema
+  UserSchema,
+  ErrorMessage
 } from '../containers/FormData';
 import '../stylesheets/user-form.css';
 
 const UserForm = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const handleSkip = event => {};
-  const userAge = '';
-  const cheeks = '';
-  const tzone = '';
-  const allergy = '';
-
   return (
     <>
       <div className='container-fluid'>
@@ -42,9 +36,13 @@ const UserForm = () => {
           }}
           validationSchema={UserSchema}
           onSubmit={async values => {
-            setLoading(true);
-            await dispatch(addUser(values));
-            setLoading(false);
+            try {
+              setLoading(true);
+              await dispatch(addUser(values));
+              setLoading(false);
+            } catch (error) {
+              console.log(error);
+            }
           }}
         >
           {({
@@ -52,7 +50,8 @@ const UserForm = () => {
             handleChange,
             errors,
             touched,
-            handleBlur
+            handleBlur,
+            values
           }) => (
             <Form onSubmit={handleSubmit}>
               <div className='row'>
@@ -62,23 +61,15 @@ const UserForm = () => {
                   </div>
                   <div className='pt-2 pb-4'>
                     <input
-                      required
                       id='name'
                       type='text'
                       onBlur={handleBlur}
-                      className={
-                        (touched.name && errors.name ? 'error' : null,
-                        ' input-name ')
-                      }
+                      className={' input-name '}
                       placeholder='Name'
                       onChange={handleChange}
                     />
                   </div>
-                  {touched.name && errors.name ? (
-                    <div className='error-message text-danger'>
-                      {errors.name}
-                    </div>
-                  ) : null}
+                  <ErrorMessage name='name' />
                   <div className='py-3'>
                     <span className='heading '>What is your Age?</span>
                   </div>
@@ -88,28 +79,17 @@ const UserForm = () => {
                         <ToggleButton
                           key={key}
                           type='radio'
-                          className={
-                            (touched.age && errors.age ? 'error' : null,
-                            'btn age-btn')
-                          }
+                          className={'btn age-btn rounded'}
                           name='age'
-                          style={{
-                            borderRadius: '10px'
-                          }}
                           value={val}
-                          checked={userAge === val}
                           onChange={handleChange}
                         >
                           {val}
                         </ToggleButton>
                       ))}
-                      {touched.name && errors.name ? (
-                        <div className='error-message text-danger'>
-                          {errors.age}
-                        </div>
-                      ) : null}
                     </ButtonGroup>
                   </div>
+                  <ErrorMessage name='age' />
                 </div>
               </div>
               <div className='row'>
@@ -130,7 +110,7 @@ const UserForm = () => {
                       <div className='col-sm-3  pt-4 fontsize2' toggle='true'>
                         Cheeks
                       </div>
-                      {skinFeels.map((val, key) => {
+                      {skinFeels.map((skin, key) => {
                         return (
                           <div className='col-sm-3' key={key}>
                             <input
@@ -140,14 +120,15 @@ const UserForm = () => {
                               }
                               type='radio'
                               name='cheeks'
-                              value={val.value}
-                              checked={cheeks === val.value}
+                              value={skin.value}
                               onChange={handleChange}
                             />
                           </div>
                         );
                       })}
+                      <ErrorMessage name='cheeks' />
                     </div>
+                    
                     <div className='row '>
                       <div className='col-sm-3  pt-4 fontsize2'>
                         T zone
@@ -155,20 +136,20 @@ const UserForm = () => {
                         <br />
                         <span className='subtext'>(Forhead, nose & chin)</span>
                       </div>
-                      {skinFeels.map((val, key) => {
+                      {skinFeels.map((skin, key) => {
                         return (
                           <div className='col-sm-3' key={key}>
                             <input
                               className='mr-3 mt-3 radiobtn'
                               type='radio'
                               name='t_zone'
-                              value={val.value}
-                              checked={tzone === val.value}
+                              value={skin.value}
                               onChange={handleChange}
                             />
                           </div>
                         );
                       })}
+                    <ErrorMessage name='t_zone' />
                     </div>
                   </div>
                   <div className='py-2 '>
@@ -188,31 +169,52 @@ const UserForm = () => {
                     <span>Select upto 2</span>
                   </div>
                   <div className='py-2 skin-options'>
-                    <div className='row ' data-toggle='buttons'>
-                      {skinConcern.map((val, key) => (
-                        <div className=' btn-group-toggle col-sm-4 ' key={key}>
-                          <label className='btn concern-btn'>
-                            <input
-                              type='checkbox'
-                              name='skin_concerns'
-                              value={val}
-                              onChange={handleChange}
-                            />
-                            {val}
-                          </label>
-                        </div>
-                      ))}
-                      <div className='col-sm-4'>
-                        <input
-                          className=' btn concern-txt'
-                          type='text'
-                          defaultValue=''
-                          name='skin_concerns'
-                          onChange={handleChange}
-                          placeholder='Others, Enter here'
-                        />
-                      </div>
+                    <div className='row '>
+                      <FieldArray
+                        name='skin_concerns'
+                        render={arrayHelpers => (
+                          <div className='row'>
+                            {skinConcern.map(skin => (
+                              <label
+                                key={skin.value}
+                                className='btn  concern-btn col-sm-'
+                              >
+                                <input
+                                  name='skin_concerns'
+                                  type='checkbox'
+                                  value={skin}
+                                  checked={values.skin_concerns.includes(
+                                    skin.value
+                                  )}
+                                  onChange={e => {
+                                    if (e.target.checked) {
+                                      arrayHelpers.push(skin.value);
+                                    } else {
+                                      const idx = values.skin_concerns.indexOf(
+                                        skin.value
+                                      );
+                                      arrayHelpers.remove(idx);
+                                    }
+                                  }}
+                                />
+                                <span>{skin.name}</span>
+                              </label>
+                            ))}
+                            <div className='col-sm-3'>
+                              <input
+                                className=' btn concern-txt'
+                                type='text'
+                                defaultValue=''
+                                name='skin_concerns'
+                                onChange={handleChange}
+                                placeholder='Others, Enter here'
+                              />
+                            </div>
+                          </div>
+                        )}
+                      />
                     </div>
+                    <ErrorMessage name='skin_concerns' />
                   </div>
                 </div>
               </div>
@@ -232,15 +234,15 @@ const UserForm = () => {
                               type='radio'
                               name='allergic_ingredients'
                               value={val}
-                              checked={allergy === val}
                               onChange={handleChange}
                             />
                             {val}
                           </label>
                         </div>
                       ))}
+                      <ErrorMessage name='allergic_ingredients' />
                       <div className='col-sm-12 py-3 ml-4'>
-                        <span onClick={handleSkip}>Skip</span>
+                        <span>Skip</span>
                       </div>
                     </div>
                   </div>
@@ -267,6 +269,7 @@ const UserForm = () => {
                       </div>
                     ))}
                   </div>
+                  <ErrorMessage name='problems' />
                 </div>
               </div>
               <div className='row'>
@@ -288,13 +291,18 @@ const UserForm = () => {
                       onChange={handleChange}
                     />
                   </div>
+                  <ErrorMessage name='email' />
                   <div className='pt-2 pb-4'>
                     <button
                       type='submit'
                       className='btn routine-btn'
                       disabled={loading}
                     >
-                      {loading ? <PropagateLoader size="10" /> : <span>SEE YOUR ROUTINE</span>}
+                      {loading ? (
+                        <span>Please Wait...</span>
+                      ) : (
+                        <span>SEE YOUR ROUTINE</span>
+                      )}
                     </button>
                   </div>
                 </div>
