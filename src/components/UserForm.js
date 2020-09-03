@@ -200,7 +200,7 @@ const UserForm = () => {
                                 <span>{skin.name}</span>
                               </label>
                             ))}
-                            <div className='col-sm-3'>
+                            <div className='col-sm-3 pl-1 '>
                               <input
                                 className=' btn concern-txt'
                                 type='text'
