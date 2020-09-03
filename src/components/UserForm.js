@@ -30,7 +30,7 @@ const UserForm = () => {
             cheeks: '',
             t_zone: '',
             skin_concerns: [],
-            allergic_ingredients: 'skipped',
+            allergic_ingredients: '',
             problems: [],
             email: ''
           }}
@@ -128,7 +128,7 @@ const UserForm = () => {
                       })}
                       <ErrorMessage name='cheeks' />
                     </div>
-                    
+
                     <div className='row '>
                       <div className='col-sm-3  pt-4 fontsize2'>
                         T zone
@@ -149,7 +149,7 @@ const UserForm = () => {
                           </div>
                         );
                       })}
-                    <ErrorMessage name='t_zone' />
+                      <ErrorMessage name='t_zone' />
                     </div>
                   </div>
                   <div className='py-2 '>
@@ -240,8 +240,8 @@ const UserForm = () => {
                           </label>
                         </div>
                       ))}
-                      <ErrorMessage name='allergic_ingredients' />
                       <div className='col-sm-12 py-3 ml-4'>
+                        <ErrorMessage name='allergic_ingredients' /><br/>
                         <span>Skip</span>
                       </div>
                     </div>
